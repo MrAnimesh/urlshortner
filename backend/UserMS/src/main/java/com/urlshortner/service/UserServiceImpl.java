@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
 				map.put("email", userDTO.getEmail());
 				map.put("exists", true);
 				map.put("verified", true);
-				map.put("message", "It looks like you’ve already registered, but your email is not verified. Please check your email for the verification link.");
+				map.put("message", "You are alreay registered, kindly login.");
 				return map;
 			}
 		}
