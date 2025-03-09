@@ -48,4 +48,7 @@ public class Users {
 	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	private VerificationToken verificationToken;
 	
+	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+	private RefreshToken refreshToken;
+	
 }

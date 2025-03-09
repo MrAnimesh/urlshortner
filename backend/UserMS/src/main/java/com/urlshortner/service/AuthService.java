@@ -37,6 +37,8 @@ public class AuthService {
 	public LoginResponse authenticateUser(LoginRequest loginRequest) {
 		System.out.println(loginRequest.getEmail());
 		
+		refreshTokenService.deleteExistingRefreshToken(loginRequest.getEmail());
+		
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);

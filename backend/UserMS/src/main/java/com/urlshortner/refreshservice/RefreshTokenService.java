@@ -37,7 +37,16 @@ public class RefreshTokenService {
 
 	    refreshToken = refreshTokenRepository.save(refreshToken);
 	    return refreshToken;
-	  }
+	}
+	
+	public void deleteExistingRefreshToken(String email) {
+		Optional<String> optionalEmail = refreshTokenRepository.findTokenByEmail(email);
+		if(optionalEmail.isPresent()) {
+			String email_present = optionalEmail.get();
+			refreshTokenRepository.deleteExistingToken(email_present);
+		}
+	}
+	
 	
 	public RefreshToken verifyExpiration(RefreshToken token) throws Exception {
 	    if (token.getExpiaryDate().compareTo(Instant.now()) < 0) {

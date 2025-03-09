@@ -113,10 +113,10 @@ public class AuthController {
 	}
 	
 	
-//	@GetMapping("/say")
-//	public String sayHello() {
-//		return "Hello";
-//	}
+	@GetMapping("/say")
+	public String sayHello() {
+		return "Hello";
+	}
 	
 //	@PreAuthorize("hasRole('USER')")
 //	@GetMapping("/user")
