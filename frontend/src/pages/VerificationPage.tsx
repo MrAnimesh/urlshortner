@@ -1,14 +1,20 @@
 import axios from "axios";
-import React from "react";
+import { p } from "framer-motion/client";
+import React, { useState } from "react";
 import { FaEnvelope, FaClock, FaExclamationCircle } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im"; // For loading spinner
+
 import { useLocation } from "react-router-dom";
 
 const VerificationPage = () => {
   const location = useLocation();
   const response = location.state;
+  const [isLoading, setIsLoading] = useState(false)
+  const [popup, setPopup] = useState(false)
 
   const requestverificationLink = async (e: any) => {
     e.preventDefault();
+    setIsLoading(true)
     console.log("data: ",response);
     
     try {
@@ -16,6 +22,9 @@ const VerificationPage = () => {
         "http://localhost:8081/api/auth/public/regeneratelink",
         { email: response.email }
       );
+      setIsLoading(false)
+      setPopup(true)
+      setTimeout(() => setPopup(false), 3000)
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -55,12 +64,16 @@ const VerificationPage = () => {
 
         {/* Resend Link */}
         <div className="mt-8">
-          <p className="text-gray-600">
+          <div className="text-gray-600">
             Didn't receive the email?{" "}
-            <button onClick={requestverificationLink} className="text-purple-600 cursor-pointer hover:text-purple-700 font-semibold">
+            <span onClick={requestverificationLink} className="text-purple-600 cursor-pointer hover:text-purple-700 font-semibold">
               Resend Verification Link
-            </button>
-          </p>
+            </span>
+            <div className="flex justify-center">
+            {isLoading ? (<ImSpinner8 className=" h-5 w-5 mt-2  text-black animate-spin" />) : (popup && <p className="text-green-600">New verification link has been sent on your email.</p>)
+            }
+            </div>
+          </div>
         </div>
 
         {/* Email Check Reminder */}
@@ -71,12 +84,11 @@ const VerificationPage = () => {
               If you didn't receive the email, please check if the email address
               you provided is correct. If it's incorrect,{" "}
               <a
-                href="/update-email"
+                href="/"
                 className="text-purple-600 hover:text-purple-700 font-semibold"
               >
-                register with your email address.
+                register with your email.
               </a>
-              .
             </p>
           </div>
         </div>
