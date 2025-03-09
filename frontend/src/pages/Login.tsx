@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { FaGoogle, FaGithub,FaEye,FaEyeSlash, FaLink } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import VerificationPage from "./VerificationPage";
+import { ImSpinner8 } from "react-icons/im"; // For loading spinner
+
 
 const cardContent = [
   {
@@ -35,6 +37,11 @@ interface User {
 const Login: React.FC<{}> = () => {
   const[showPassword, setShowPassword] = useState(false);
   const navigaet = useNavigate();
+  const [error, setError] = useState("")
+  const [showResendPopup, setShowResendPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
+
+
 
   const [user, setUser] = useState<User>({
     username: "",
@@ -54,8 +61,29 @@ const Login: React.FC<{}> = () => {
       const data = await response.data
       console.log(response.data)
       navigateToVerification(data)
-    }catch(err){
+      setError("")
+    }catch(err: any){
       console.log(err)
+      setError(err.response.data.message)
+    }
+  };
+
+  const requestverificationLink = async (e: any) => {
+    setIsLoading(true)
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:8081/api/auth/public/regeneratelink",
+        { email: user.email }
+      );
+      setTimeout(() => {
+        setIsLoading(false); // Hide loading screen
+        setShowResendPopup(true); // Show success popup
+        setTimeout(() => setShowResendPopup(false), 3000); // Hide popup after 3 seconds
+      }, 2000); // Simulate a 2-second delay
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -66,7 +94,9 @@ const Login: React.FC<{}> = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 p-4">
       {/* Container */}
-      <div className="flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-105">
+      {/* Loading Screen */}
+      
+      <div className="flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-101">
         {/* Left Side - Website Info */}
         <div className="hidden md:flex flex-col justify-center items-center p-8 md:w-1/2 space-y-6 bg-gradient-to-br from-blue-100 to-purple-100">
           <h1 className="text-5xl font-bold text-gray-900 text-center">
@@ -115,6 +145,30 @@ const Login: React.FC<{}> = () => {
         {/* Right Side - Signup Form */}
         <div className="w-full md:w-1/2 p-8 md:p-12">
           <h2 className="text-center text-3xl font-bold mb-8 text-gray-900">Sign Up</h2>
+          {/* Error Message Section */}
+          {error && (
+
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg">
+              {error}
+              <p>If not recieved click on <span onClick={requestverificationLink} className="text-blue-700 cursor-pointer">resend</span> to get a new link.</p>
+              <span className="flex justify-center">{isLoading && (<ImSpinner8 className=" h-5 w-5 mt-2  text-black animate-spin" />)}</span>
+              {/* {isLoading && (
+        <div className="inset-0 flex items-center rounded-lg justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="flex flex-col items-center space-y-4">
+            <ImSpinner8 className="h-5 w-5 mt-2 text-white animate-spin" />
+            <p className="text-white mb-2">Resending link...</p>
+          </div>
+        </div>
+      )} */}
+               {/* Resend Link Popup */}
+      {showResendPopup && (
+        <div className="right-4 p-4 bg-green-50 border border-green-200 text-green-600 rounded-lg shadow-lg">
+          Link has been resent. Kindly check your email.
+        </div>
+      )}
+            </div>
+          )}
+         
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Username Field */}
             <div>
@@ -192,7 +246,7 @@ const Login: React.FC<{}> = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-101"
             >
               Sign Up
             </button>

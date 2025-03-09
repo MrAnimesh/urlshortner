@@ -57,7 +57,7 @@ const VerificationPage = () => {
         <div className="mt-8">
           <p className="text-gray-600">
             Didn't receive the email?{" "}
-            <button onClick={requestverificationLink} className="text-purple-600 hover:text-purple-700 font-semibold">
+            <button onClick={requestverificationLink} className="text-purple-600 cursor-pointer hover:text-purple-700 font-semibold">
               Resend Verification Link
             </button>
           </p>
@@ -74,7 +74,7 @@ const VerificationPage = () => {
                 href="/update-email"
                 className="text-purple-600 hover:text-purple-700 font-semibold"
               >
-                update your email address
+                register with your email address.
               </a>
               .
             </p>
