@@ -284,7 +284,7 @@ const Register: React.FC<{}> = () => {
               <p className="text-sm text-gray-600">
                 Already have an account?{" "}
                 <a
-                  href="/login"
+                  href="/"
                   className="text-purple-500 hover:text-purple-600 font-semibold"
                 >
                   Log in

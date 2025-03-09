@@ -62,6 +62,15 @@ const VerificationPage = () => {
           </p>
         </div>
 
+        <div className="text-center mt-6">
+        <a
+          href="/"
+          className="text-purple-400 hover:text-purple-300 font-semibold transition-all duration-300"
+        >
+          ← Back to Login
+        </a>
+      </div>
+
         {/* Resend Link */}
         <div className="mt-8">
           <div className="text-gray-600">
@@ -84,7 +93,7 @@ const VerificationPage = () => {
               If you didn't receive the email, please check if the email address
               you provided is correct. If it's incorrect,{" "}
               <a
-                href="/"
+                href="/register"
                 className="text-purple-600 hover:text-purple-700 font-semibold"
               >
                 register with your email.
