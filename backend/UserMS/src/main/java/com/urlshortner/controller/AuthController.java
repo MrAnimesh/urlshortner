@@ -118,6 +118,11 @@ public class AuthController {
 		return "Hello";
 	}
 	
+	@GetMapping("/verifytoken")
+	public ResponseEntity<String> accessTokenVerification(){
+		return new ResponseEntity<>("Verification Success", HttpStatus.OK);
+	}
+	
 //	@PreAuthorize("hasRole('USER')")
 //	@GetMapping("/user")
 //	public String userEndpoint() { // If role not matched then stopping user to execute the method.
