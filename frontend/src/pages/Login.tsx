@@ -49,18 +49,17 @@ const Login = () => {
     setLoginCred({...loginCred, [name]: value})
   }
 
-  // Mock function to simulate login
   const handleLogin: React.ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
     try{
       const response = await axios.post("http://localhost:8081/api/auth/public/signin", loginCred)
       const data = await response.data
+      
       localStorage.setItem("accessToken", data.jwtToken);
       localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem('email', data.username)
       navigate("/home")
 
-      console.log("data: ",data);
-      
     }catch(err){
       console.log("err: ",err);
 
