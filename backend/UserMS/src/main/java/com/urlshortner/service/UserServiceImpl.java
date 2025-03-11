@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.urlshortner.dto.UserDTO;
 import com.urlshortner.entity.Users;
 import com.urlshortner.entity.VerificationToken;
+import com.urlshortner.repository.RefreshTokenRepository;
 import com.urlshortner.repository.UserRepository;
 import com.urlshortner.repository.VerificationTokenRepository;
 
@@ -107,6 +108,7 @@ public class UserServiceImpl implements UserService{
 		
 		return "Thank you, Email has been verified.";
 	}
+	
 //	public String verifyOtp(Integer otp) throws Exception {
 //		Optional<VerificationToken> Otp =  tokenRepository.findByOtp(otp);
 //		VerificationToken verificationToken = Otp.orElseThrow(()-> new Exception("Token not found"));

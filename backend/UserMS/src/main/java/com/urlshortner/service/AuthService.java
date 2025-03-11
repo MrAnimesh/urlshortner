@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.urlshortner.entity.RefreshToken;
 import com.urlshortner.exception.CustomAuthenticationException;
 import com.urlshortner.refreshservice.RefreshTokenService;
+import com.urlshortner.repository.RefreshTokenRepository;
 import com.urlshortner.security.LoginRequest;
 import com.urlshortner.security.LoginResponse;
 import com.urlshortner.security.UserDetailsImpl;
@@ -59,7 +60,11 @@ public class AuthService {
 			throw new CustomAuthenticationException("Invalid email or password");
 		}
 		
-		
+	}
+	
+	public String logoutUser(String email) {
+		refreshTokenService.deleteExistingRefreshToken(email);
+		return "User Logged out successfully.";
 	}
 
 }

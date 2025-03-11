@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,10 +108,12 @@ public class AuthController {
 		return new ResponseEntity<String>(message, HttpStatus.OK);
 	}
 	
-	@PostMapping("/auth/logout")
-	public ResponseEntity<?> logoutUser() {
+	@GetMapping("/auth/private/logout/{email}")
+	public ResponseEntity<?> logoutUser(@PathVariable("email") String email) {
+		System.out.println("logout: "+email);
+		String message = authService.logoutUser(email);
 	    SecurityContextHolder.clearContext(); // Clears the authentication
-	    return ResponseEntity.ok(Map.of("message", "User logged out successfully", "status", true));
+	    return ResponseEntity.ok(Map.of("message", message, "status", true));
 	}
 	
 	
