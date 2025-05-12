@@ -54,10 +54,12 @@ const Login = () => {
     try{
       const response = await axios.post("http://localhost:8081/api/auth/public/signin", loginCred)
       const data = await response.data
+      console.log(response.data);
       
       localStorage.setItem("accessToken", data.jwtToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('email', data.username)
+      localStorage.setItem('userId', data.id)
       navigate("/home")
 
     }catch(err){

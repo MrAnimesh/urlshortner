@@ -89,6 +89,7 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
 const Home: React.FC = () => {
   const [animatedIndex, setAnimatedIndex] = useState<number>(0);
   const [inputUrl, setInputUrl] = useState<string>("");
+  const [shortUrl, setShortUrl] = useState<string>("");
 
   const navigate = useNavigate();
 
@@ -145,6 +146,7 @@ const Home: React.FC = () => {
         "Yes, once created, your shortened links will not expire and will continue to redirect to the original URL indefinitely.",
     },
   ];
+  
 
   const generateNewToken = async () => {
     const refreshToken: object = {
@@ -161,6 +163,7 @@ const Home: React.FC = () => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("email")
+      navigate('/login')
     }
   };
 
@@ -178,6 +181,7 @@ const Home: React.FC = () => {
       console.log(data);
     } catch (err) {
       await generateNewToken();
+      window.location.reload()
     }
   };
 
@@ -196,11 +200,29 @@ const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleShortenUrl = () => {
-    // Handle URL shortening logic here
-    console.log("Shortening URL:", inputUrl);
-    // This would typically make an API call and handle the response
+  const handleShortenUrl = async () => {
+    const token = localStorage.getItem("accessToken")
+    const userId = localStorage.getItem('userId')
+    console.log(inputUrl);
+    
+    const res = await axios.post("http://localhost:8081/shortner/public/shorten",{
+      originalUrl: inputUrl,
+      userId: userId
+    })
+    console.log(res.data);
+    setShortUrl(res.data);
+    
   };
+
+  const copyToClipboard = async() => {
+    const url:any = document.getElementById("shortenUrl")?.innerHTML;
+    try {
+      await navigator.clipboard.writeText(url);
+      console.log('Content copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
 
   return (
     <>
@@ -299,6 +321,19 @@ const Home: React.FC = () => {
                   Shorten URL
                 </button>
               </div>
+              { shortUrl && <div
+                      className={`text-sm font-mono text-indigo-600 mt-4 flex justify-center items-center space-x-2`}
+                    >
+                      <span id="shortenUrl">{shortUrl}</span>
+                      <button
+                      onClick={copyToClipboard}
+                        className="ml-2 text-sm bg-indigo-500 text-white p-1 rounded transition-transform duration-200 hover:scale-110 active:scale-90"
+                        aria-label="Copy to clipboard"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                    }
             </div>
   
             {/* Popular Links Section */}
