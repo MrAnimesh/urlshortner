@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class LoginResponse {
 	
+	private Long id;
 	private String jwtToken;
 	private String refreshToken;
 	private String email;
@@ -15,11 +16,12 @@ public class LoginResponse {
 	
 	
 	
-	public LoginResponse(String jwtToken, String refreshToken, String email, List<String> roles) {
+	public LoginResponse(String jwtToken, String refreshToken, String email, List<String> roles, Long id) {
 		this.jwtToken = jwtToken;
 		this.email = email;
 		this.roles = roles;
 		this.refreshToken = refreshToken;
+		this.id = id;
 	}
 	
 	public LoginResponse(Map<String, Object> map) {
@@ -50,6 +52,15 @@ public class LoginResponse {
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	
 	
 	

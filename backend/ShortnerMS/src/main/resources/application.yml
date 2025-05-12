@@ -1,0 +1,23 @@
+server:
+  port: 3000
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/url_shortner
+    username: root
+    password: Meshu@123
+  jpa:
+    hibernate.ddl-auto: update
+  application:
+    name: ShortnerMS
+  cloud:
+    consul:
+      discovery:
+        hostname: localhost
+
+General:
+  EXCEPTION_MESSAGE: Request could not be processed.
+Service:
+  URL_NOT_FOUND: This URL is wrong, Kindly check it once.
+API:
+  WRONG_URL: The given url does not matches required criteria, kindly check onece.

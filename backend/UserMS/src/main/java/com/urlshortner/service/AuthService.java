@@ -54,7 +54,7 @@ public class AuthService {
 			
 			List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
 			
-			LoginResponse response = new LoginResponse(jwtToken, refreshToken.getToken(), userDetails.getUsername(), roles);
+			LoginResponse response = new LoginResponse(jwtToken, refreshToken.getToken(), userDetails.getUsername(), roles, userDetails.getId());
 			return response;
 		}catch(AuthenticationException e) {			
 			throw new CustomAuthenticationException("Invalid email or password");
@@ -64,6 +64,11 @@ public class AuthService {
 	
 	public String logoutUser(String email) {
 		refreshTokenService.deleteExistingRefreshToken(email);
+		return "User Logged out successfully.";
+	}
+	
+	public String logoutUser2(String refreshToken) {
+		refreshTokenService.deleteExistingRefreshToken2(refreshToken);
 		return "User Logged out successfully.";
 	}
 

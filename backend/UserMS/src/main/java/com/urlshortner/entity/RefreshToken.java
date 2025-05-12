@@ -13,10 +13,14 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "refreshtoken", schema = "user_schema")
-@Data
+//@Data
+@Getter
+@Setter
 public class RefreshToken {
 	
 	@Id

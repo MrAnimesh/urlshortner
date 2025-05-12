@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.urlshortner.dto.LogoutRefreshTokenRequest;
 import com.urlshortner.dto.RegenerateRequest;
 import com.urlshortner.dto.UserDTO;
 import com.urlshortner.entity.RefreshToken;
@@ -113,6 +114,23 @@ public class AuthController {
 		System.out.println("logout: "+email);
 		String message = authService.logoutUser(email);
 	    SecurityContextHolder.clearContext(); // Clears the authentication
+	    return ResponseEntity.ok(Map.of("message", message, "status", true));
+	}
+	
+	
+	
+//	@GetMapping("/auth/public/logout")
+//	public ResponseEntity<?> logout(@RequestParam("refreshToken") String refreshToken){
+//		System.out.println("Inside new logout");
+//		String message = authService.logoutUser2(refreshToken);
+//		SecurityContextHolder.clearContext(); // Clears the authentication
+//	    return ResponseEntity.ok(Map.of("message", message, "status", true));
+//	}
+	@PostMapping("/auth/public/logout")
+	public ResponseEntity<?> logout(@RequestBody LogoutRefreshTokenRequest refreshToken){
+		System.out.println("Inside new logout");
+		String message = authService.logoutUser2(refreshToken.getRefreshToken());
+		SecurityContextHolder.clearContext(); // Clears the authentication
 	    return ResponseEntity.ok(Map.of("message", message, "status", true));
 	}
 	

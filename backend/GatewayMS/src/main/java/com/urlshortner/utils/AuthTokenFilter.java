@@ -34,13 +34,14 @@ public class AuthTokenFilter implements GlobalFilter, Ordered {
         
         String authHeader = request.getHeaders().getFirst("Authorization");
         
-//        if (path.startsWith("/signin") || path.startsWith("/actuator/health")) {
-//            return chain.filter(exchange);
-//        }
+        if (path.startsWith("/api/auth/public") || path.startsWith("/actuator/health") || path.startsWith("/shortner/public") || path.startsWith("/")) {
+            return chain.filter(exchange);
+        }
         
         // If no auth header, let Spring Security handle it based on path rules
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return chain.filter(exchange);
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
         }
 
         String token = authHeader.substring(7);

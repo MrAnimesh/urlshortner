@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 @Service
 public class RefreshTokenService {
 	
-	private Long refreshTokenDurationMs = 604800000L;
+	private Long refreshTokenDurationMs = 120000L;
 	
 	@Autowired
 	private RefreshTokenRepository refreshTokenRepository;
@@ -46,6 +46,23 @@ public class RefreshTokenService {
 			refreshTokenRepository.deleteExistingToken(email_present);
 		}
 	}
+	
+	public void deleteExistingRefreshToken2(String token) {
+	    System.out.println("I'm here: " + token);
+
+	    Optional<RefreshToken> optionalToken = refreshTokenRepository.findByToken(token);
+	    
+	    if (optionalToken.isPresent()) {
+	        RefreshToken newToken = optionalToken.get();
+	        System.out.println("New Token: " + newToken);
+	        
+	        System.out.println("Deleted");
+	        refreshTokenRepository.deleteExistingToken2(token);
+	    } else {
+	        System.out.println("Token not found.");
+	    }
+	}
+
 	
 	
 	public RefreshToken verifyExpiration(RefreshToken token) throws Exception {
